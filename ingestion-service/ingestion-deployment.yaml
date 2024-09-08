@@ -1,0 +1,24 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: market-data-ingestion
+  namespace: kafka
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: market-data-ingestion
+  template:
+    metadata:
+      labels:
+        app: market-data-ingestion
+    spec:
+      containers:
+        - name: market-data-ingestion
+          image: market-data-ingestion:latest
+          imagePullPolicy: Never
+          env:
+            - name: KAFKA_BROKER
+              value: "quantstream-cluster-kafka-bootstrap:9092"
+            - name: KAFKA_TOPIC
+              value: "market-data"
